@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_STACK_SIZE 100
+
+// Stack structure
+typedef struct {
+    int data[MAX_STACK_SIZE];
+    int top; // Index of the top element
+} Stack;
+
+// Function to initialize an empty stack
+Stack* init() {
+    Stack* stack = (Stack*)malloc(sizeof(Stack));
+    if (stack == NULL) {
+        printf("Memory allocation failed\n");
+        exit(EXIT_FAILURE);
+    }
+    stack->top = -1; // Stack is initially empty
+    return stack;
+}
+
+// Function to check if the stack is empty
+int empty(Stack* stack) {
+    return (stack->top == -1); // If top is -1, stack is empty
+}
+
+// Function to push an element onto the stack
+void push(Stack* stack, int value) {
+    if (stack->top == MAX_STACK_SIZE - 1) {
+        printf("Stack overflow\n");
+        return;
+    }
+    stack->data[++stack->top] = value;
+}
+
+// Function to return the top element of the stack
+int top(Stack* stack) {
+    if (empty(stack)) {
+        printf("Stack is empty\n");
+        exit(EXIT_FAILURE);
+    }
+    return stack->data[stack->top];
+}
+
+// Function to delete the top element of the stack
+void pop(Stack* stack) {
+    if (empty(stack)) {
+        printf("Stack is empty\n");
+        return;
+    }
+    stack->top--;
+}
+
+// Function to deallocate memory used by the stack
+void destroy(Stack* stack) {
+    free(stack);
+}
+
+int main() {
+    Stack* stack = init(); // Initialize stack
+
+    // Push elements onto the stack
+    push(stack, 10);
+    push(stack, 20);
+    push(stack, 30);
+
+    // Print top element
+    printf("Top element: %d\n", top(stack));
+
+    // Delete top element
+    pop(stack);
+
+    // Print top element again
+    printf("Top element after deletion: %d\n", top(stack));
+
+    destroy(stack); // Free memory used by the stack
+
+    return 0;
+}
